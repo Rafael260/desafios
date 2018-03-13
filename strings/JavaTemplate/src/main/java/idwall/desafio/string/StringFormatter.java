@@ -26,5 +26,5 @@ public abstract class StringFormatter {
      * @param text
      * @return
      */
-    public abstract String format(String text);
+    public abstract String format(String text, boolean justify);
 }
