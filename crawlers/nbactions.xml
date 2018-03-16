@@ -29,4 +29,21 @@
                 <jpda.listen>true</jpda.listen>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-clean package</actionName>
+            <displayName>clean package</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-clean package assembly:single</actionName>
+            <displayName>clean package assembly:single</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+                <goal>assembly:single</goal>
+            </goals>
+        </action>
     </actions>

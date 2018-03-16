@@ -15,6 +15,5 @@ import java.util.List;
  */
 public interface IConsumidorReddit {
     
-    public String coletarThreadsEmAlta(List<String> subReddits);
-    public void fecharConexao();
+    public List<String> coletarThreadsEmAlta(List<String> subReddits);
 }

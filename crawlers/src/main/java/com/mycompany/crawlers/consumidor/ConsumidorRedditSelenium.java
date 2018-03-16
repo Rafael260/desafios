@@ -5,68 +5,63 @@
  */
 package com.mycompany.crawlers.consumidor;
 
+import com.mycompany.crawlers.exceptions.SubRedditNaoEncontradaException;
 import com.mycompany.crawlers.exceptions.ThreadIrrelevanteException;
 import com.mycompany.crawlers.model.RedditThread;
 import com.mycompany.crawlers.model.SubReddit;
+import com.mycompany.crawlers.util.Crawler;
 import com.mycompany.crawlers.util.Util;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  *
  * @author rafao
  */
-public class ConsumidorRedditSelenium implements IConsumidorReddit {
+public class ConsumidorRedditSelenium extends Crawler implements IConsumidorReddit {
 
     public static final String BASE_URL = "https://www.reddit.com/r/";
     //Se colocar a opcao top o site ja traz as threads ordenadas pelas pontuacoes
     public static final String URL_SUFIX = "/top";
     public static final int PONTUACAO_MINIMA = 5000;
 
-    private WebDriver driver;
-    private WebDriverWait waiter;
-
-    public ConsumidorRedditSelenium() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        String arquivoDriver = classLoader.getResource("chromedriver.exe").getFile();
-        System.setProperty("webdriver.chrome.driver", arquivoDriver);
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        waiter = new WebDriverWait(driver, 30);
-    }
-
     @Override
-    public String coletarThreadsEmAlta(List<String> subRedditsString) {
+    public List<String> coletarThreadsEmAlta(List<String> subRedditsString) {
         List<SubReddit> subReddits = Util.StringToSubRedditList(subRedditsString);
         for (SubReddit subReddit : subReddits) {
-            acessarSubReddit(subReddit);
-            procurarThreads(subReddit);
+            try{
+                acessarSubReddit(subReddit);
+                procurarThreads(subReddit);
+            }catch(SubRedditNaoEncontradaException e){
+                System.out.println(e.getLocalizedMessage());
+            }
         }
+        fecharConexao();
         return coletarRelatorioThreadsEmAlta(subReddits);
     }
 
-    @Override
-    public void fecharConexao() {
-        driver.close();
-    }
-
-    private void acessarSubReddit(SubReddit subReddit) {
+    private void acessarSubReddit(SubReddit subReddit) throws SubRedditNaoEncontradaException{
         driver.get(BASE_URL + subReddit.getNome() + URL_SUFIX);
         Util.esperar(3000);
+        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id("siteTable")));
+        if(driver.findElement(By.id("siteTable")).getAttribute("innerHTML").contains("parece que não há nada aqui")){
+            throw new SubRedditNaoEncontradaException("Não existe o subreddit "+ subReddit.getNome());
+        }
     }
 
     private void procurarThreads(SubReddit subReddit) {
-        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id("siteTable")));
         WebElement tabelaThreads;
         do {
             tabelaThreads = driver.findElement(By.id("siteTable"));
             List<WebElement> divsDaTabelaDeThreads = tabelaThreads.findElements(By.tagName("div"));
+            if(divsDaTabelaDeThreads.isEmpty()){
+                System.out.println("Subreddit " + subReddit.getNome() + " não possui threads");
+                return;
+            }
             for (WebElement divDaTabela : divsDaTabelaDeThreads) {
                 if(divDaTabela.getAttribute("innerHTML").contains("<p class=\"parent\">")){
                     try {
@@ -78,8 +73,16 @@ public class ConsumidorRedditSelenium implements IConsumidorReddit {
                 }
             }
             clicarNoBotaoProximo();
-        } while (driver.findElement(By.className("next-button")) != null);
-
+        } while (possuiBotaoDeProximo());
+    }
+    
+    private boolean possuiBotaoDeProximo(){
+        try{
+            return driver.findElement(By.className("next-button")) != null;
+        }
+        catch(Exception e){
+            return false;
+        }
     }
     
     private void adicionarThreadEmAlta(SubReddit subReddit, WebElement divDaThread) throws ThreadIrrelevanteException{
@@ -102,26 +105,29 @@ public class ConsumidorRedditSelenium implements IConsumidorReddit {
     }
 
     private void clicarNoBotaoProximo() {
-        WebElement botaoProximo = driver.findElement(By.className("next-button"));
-        if (botaoProximo != null) {
+        try{
+            WebElement botaoProximo = driver.findElement(By.className("next-button"));
             botaoProximo.click();
             waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id("header-img")));
             Util.esperar(2000);
+        }catch(Exception e){
+            System.out.println("Não tem (mais) botão próximo");
         }
     }
 
-    private String coletarRelatorioThreadsEmAlta(List<SubReddit> subReddits) {
-        StringBuilder sbRelatorio = new StringBuilder();
+    private List<String> coletarRelatorioThreadsEmAlta(List<SubReddit> subReddits) {
+        List<String> threadsEmAlta = new ArrayList<>();
+        StringBuilder sbThreadEmAlta;
         for(SubReddit subReddit: subReddits){
             if(!subReddit.getThreads().isEmpty()){
                 for(RedditThread thread: subReddit.getThreads()){
-                    sbRelatorio.append("Nome da subreddit: ").append(subReddit.getNome()).append("\n");
-                    sbRelatorio.append(thread.toString());
-                    sbRelatorio.append("============================================================\n");
+                    sbThreadEmAlta = new StringBuilder();
+                    sbThreadEmAlta.append("Nome da subreddit: ").append(subReddit.getNome()).append("\n");
+                    sbThreadEmAlta.append(thread.toString());
+                    threadsEmAlta.add(sbThreadEmAlta.toString());
                 }
             }
         }
-        return sbRelatorio.toString();
+        return threadsEmAlta;
     }
-
 }
