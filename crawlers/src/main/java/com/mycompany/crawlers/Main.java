@@ -5,15 +5,8 @@
  */
 package com.mycompany.crawlers;
 
-import com.mycompany.crawlers.consumidor.ConsumidorRedditSelenium;
-import com.mycompany.crawlers.consumidor.IConsumidorReddit;
-import com.mycompany.crawlers.exceptions.NotificacaoException;
-import com.mycompany.crawlers.notificador.INotificador;
-import com.mycompany.crawlers.notificador.NotificadorTelegram;
 import com.mycompany.crawlers.notificador.NotificadorTelegramAPI;
 import com.mycompany.crawlers.util.Util;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  *

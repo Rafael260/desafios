@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by Rodrigo CatÃ£o Araujo on 06/02/2018.
+ * Created by Rodrigo CatÃƒÂ£o Araujo on 06/02/2018.
  */
 public class IdwallFormatter extends StringFormatter {
 
@@ -51,7 +51,7 @@ public class IdwallFormatter extends StringFormatter {
             }
             linhaAtual = acrescentarPalavraNaLinha(palavraAtual, linhaAtual);
         }
-        //Acrescenta a última linha formatada
+        //Acrescenta a ultima linha formatada
         textoFormatado = acrescentarLinhaNoTextoFormatado(linhaAtual, textoFormatado, justificar);
         return textoFormatado;
     }
@@ -65,7 +65,7 @@ public class IdwallFormatter extends StringFormatter {
     
     /**
      * Justifica a linha para a quantidade exata de caracteres
-     * @param linha linha no máximo com nº de caracteres do limite
+     * @param linha linha no maximo com num de caracteres do limite
      * @return 
      */
     private String justificarLinha(String linha){
@@ -76,12 +76,8 @@ public class IdwallFormatter extends StringFormatter {
         int numeroCaracteresUsados = linha.length();
         boolean percorrerIndicesPares = true;
         while(numeroCaracteresUsados < this.limit.intValue()){
-            System.out.println("NUM CARACTERES USADOS: " + numeroCaracteresUsados);
-            System.out.println("While do numeroCaracteresUsados < this.limit");
             for(int i = coletarIndiceInicial(percorrerIndicesPares); i < espacos.length; i+= 2){
-                System.out.println("for do coletarIndiceInicial");
                 if(numeroCaracteresUsados == this.limit){
-                    System.out.println("Numero de caracteres usados eh igual ao limite de caracteres");
                     break;
                 }
                 espacos[i] += " ";
@@ -89,7 +85,6 @@ public class IdwallFormatter extends StringFormatter {
             }
             percorrerIndicesPares = !percorrerIndicesPares;
         }
-        System.out.println("Vai retornar a linha justificada!");
         return montarLinhaJustificada(palavras, espacos);
     }
     
@@ -123,7 +118,7 @@ public class IdwallFormatter extends StringFormatter {
     }
     
     /**
-     * Testa se é possível colocar mais uma palavra na mesma linha, respeitando o limite de caracteres
+     * Testa se Ã© possivel colocar mais uma palavra na mesma linha, respeitando o limite de caracteres
      * @param palavra
      * @param linha
      * @return 

@@ -1,4 +1,4 @@
-# Desafio 1: Strings
+# String Formatter
 
 Após ler o coding style do kernel Linux, você descobre a mágica que é 
 ter linhas de código com no máximo 80 caracteres cada uma.
@@ -7,33 +7,18 @@ Assim, você decide que de hoje em diante seus e-mails enviados também
 seguirão um padrão parecido e resolve desenvolver um plugin para te ajudar
 com isso. Contudo, seu plugin aceitará no máximo 40 caracteres por linha.
 
-Implemente uma função que receba: 
-1. um texto qualquer
-2. um limite de comprimento  
-
-e seja capaz de gerar os outputs dos desafios abaixo.
-
 ## Exemplo input
 
 `In the beginning God created the heavens and the earth. Now the earth was formless and empty, darkness was over the surface of the deep, and the Spirit of God was hovering over the waters.`
 
 `And God said, "Let there be light," and there was light. God saw that the light was good, and he separated the light from the darkness. God called the light "day," and the darkness he called "night." And there was evening, and there was morning - the first day.`
 
-O texto deve ser parametrizável e se quiser, pode utilizar um texto de input de sua preferência.
+## Como construir o projeto
 
-### Parte 1 (Básico) - limite 40 caracteres
-Você deve seguir o exemplo de output [deste arquivo](https://github.com/idwall/desafios/blob/master/strings/output_parte1.txt), onde basta o texto possuir, no máximo, 40 caracteres por linha. As palavras não podem ser quebradas no meio.
+`Com o terminal/cmd aberto na pasta do projeto(a pasta com o arquivo pom.xml), utilize o comando: mvn clean package`
 
-### Parte 2 (Intermediário) - limite 40 caracteres
-O exemplo de output está [neste arquivo](https://github.com/idwall/desafios/blob/master/strings/output-parte2.txt), onde além de o arquivo possuir, no máximo, 40 caracteres por linha, o texto deve estar **justificado**.
+## Executar o projeto
 
-### Dicas
-- Existe um template para projetos em Java ;)
-
-### Extras
-
-- Tratamento de erros e exceções. Fica a seu critério quais casos deseja tratar e como serão tratados.
-- Testes unitários ou de integração.
-- Uso do Docker.
-- Parametrização da quantidade de caracteres por linha.
-- Utilizar as versões mais atuais da linguagem que escolher para desenvolver (JavaScript ES6+; Java 8; Python 3, etc).
+`java -jar target/StringFormatter-1.0-SNAPSHOT-jar-with-dependencies.jar
+Opcionalmente você pode colocar os parâmetros <texto> <limite_de_caracteres> <booleano_para_justificar_texto>
+Exemplo: java -jar target/StringFormatter-1.0-SNAPSHOT-jar-with-dependencies.jar "texto tal" 6 false`

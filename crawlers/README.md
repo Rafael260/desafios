@@ -1,4 +1,4 @@
-# Desafio 2: Crawlers
+# Crawlers
 
 Parte do trabalho na IDwall inclui desenvolver *crawlers/scrapers* para coletar dados de websites.
 Como nós nos divertimos trabalhando, às vezes trabalhamos para nos divertir!
@@ -27,4 +27,18 @@ Essa parte pode ser um CLI simples, desde que a formatação da impressão fique
 Construir um robô que nos envie essa lista via Telegram sempre que receber o comando `/NadaPraFazer [+ Lista de subrredits]` (ex.: `/NadaPraFazer programming;dogs;brazil`)
 
 
-Qualquer método para coletar os dados é válido. Caso não saiba por onde começar, procure por SeleniumHQ (Java), PhantomJS (Javascript) e Scrapy (Python).
+## Configurando o robô
+
+`Entre no Telegram e configure seu bot através do link: https://web.telegram.org/#/im?p=@BotFather.
+Utilize o comando /newbot para cadastrar um novo bot. Em seguida, escolha um nome e um usuário para o bot. Após isso, você receberá um token para acessar a API. Coloque o token na constante "TOKEN" na classe NotificacaoTelegramAPI.`
+
+## Como construir o projeto
+
+`Com o terminal/cmd aberto na pasta do projeto(a pasta com o arquivo pom.xml), utilize o comando: mvn clean package`
+
+## Executar o projeto
+
+`Utilize o comando java -jar target/crawlers-1.0SNAPSHOT-jar-with-dependencies.jar.
+Depois disso, vá no chat do bot para enviar os comandos`
+
+
