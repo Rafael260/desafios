@@ -1,5 +1,7 @@
 package idwall.desafio.string;
 
+import idwall.desafio.exceptions.LimiteBaixoException;
+
 /**
  * Created by Rodrigo Catão Araujo on 06/02/2018.
  */
@@ -26,5 +28,5 @@ public abstract class StringFormatter {
      * @param text
      * @return
      */
-    public abstract String format(String text, boolean justify);
+    public abstract String format(String text, boolean justify) throws LimiteBaixoException;
 }
