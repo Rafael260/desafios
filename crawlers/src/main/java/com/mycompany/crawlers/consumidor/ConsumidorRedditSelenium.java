@@ -9,9 +9,10 @@ import com.mycompany.crawlers.exceptions.SubRedditNaoEncontradaException;
 import com.mycompany.crawlers.exceptions.ThreadIrrelevanteException;
 import com.mycompany.crawlers.model.RedditThread;
 import com.mycompany.crawlers.model.SubReddit;
-import com.mycompany.crawlers.util.Crawler;
+import com.mycompany.crawlers.util.Selenium;
 import com.mycompany.crawlers.util.Util;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -22,16 +23,33 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
  *
  * @author rafao
  */
-public class ConsumidorRedditSelenium extends Crawler implements IConsumidorReddit {
+public class ConsumidorRedditSelenium extends Selenium implements IConsumidorReddit {
 
     public static final String BASE_URL = "https://www.reddit.com/r/";
     //Se colocar a opcao top o site ja traz as threads ordenadas pelas pontuacoes
     public static final String URL_SUFIX = "/top";
-    public static final int PONTUACAO_MINIMA = 5000;
+    public static final int PONTUACAO_MINIMA_DEFAULT = 5000;
+    public static final String LIST_DELIMITER = ";";
 
+    private int pontuacaoMinima;
+    
+    public ConsumidorRedditSelenium(){
+        this.pontuacaoMinima = PONTUACAO_MINIMA_DEFAULT;
+    }
+    
+    public ConsumidorRedditSelenium(int pontuacaoMinima){
+        if(pontuacaoMinima > 0){
+            this.pontuacaoMinima = pontuacaoMinima;
+        }
+        else{
+            this.pontuacaoMinima = PONTUACAO_MINIMA_DEFAULT;
+        }
+    }
+    
     @Override
-    public List<String> coletarThreadsEmAlta(List<String> subRedditsString) {
-        List<SubReddit> subReddits = Util.StringToSubRedditList(subRedditsString);
+    public List<String> coletarThreadsEmAlta(String subRedditsString) {
+        List<String> subRedditList = Arrays.asList(subRedditsString.split(LIST_DELIMITER));
+        List<SubReddit> subReddits = Util.StringToSubRedditList(subRedditList);
         for (SubReddit subReddit : subReddits) {
             try{
                 acessarSubReddit(subReddit);
@@ -47,7 +65,11 @@ public class ConsumidorRedditSelenium extends Crawler implements IConsumidorRedd
     private void acessarSubReddit(SubReddit subReddit) throws SubRedditNaoEncontradaException{
         driver.get(BASE_URL + subReddit.getNome() + URL_SUFIX);
         Util.esperar(3000);
-        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id("siteTable")));
+        try{
+            waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id("siteTable")));
+        }catch(TimeoutException e){
+            throw new SubRedditNaoEncontradaException("Não existe o subreddit "+ subReddit.getNome() + " ou não é público");
+        }
         if(driver.findElement(By.id("siteTable")).getAttribute("innerHTML").contains("parece que não há nada aqui")){
             throw new SubRedditNaoEncontradaException("Não existe o subreddit "+ subReddit.getNome());
         }
@@ -91,8 +113,8 @@ public class ConsumidorRedditSelenium extends Crawler implements IConsumidorRedd
         String strPontuacao = divsInternas.get(0).findElements(By.tagName("div")).get(2).getAttribute("title");
         RedditThread thread = new RedditThread();
         int pontuacao = Integer.parseInt(strPontuacao);
-        if(pontuacao < PONTUACAO_MINIMA){
-            throw new ThreadIrrelevanteException("A thread possui pontuação inferior a " + PONTUACAO_MINIMA);
+        if(pontuacao < this.pontuacaoMinima){
+            throw new ThreadIrrelevanteException("A thread possui pontuação inferior a " + PONTUACAO_MINIMA_DEFAULT);
         }
         thread.setPontuacao(pontuacao);
         WebElement divInfoThread = divsInternas.get(1).findElement(By.tagName("div"));

@@ -18,16 +18,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * @author rafao
  */
-public abstract class Crawler {
+public abstract class Selenium {
 
     protected WebDriver driver;
     protected WebDriverWait waiter;
 
-    public Crawler() {
+    public Selenium() {
         String arquivoDriver = criarArquivoDriverNoDiretorio();
         System.setProperty("webdriver.chrome.driver", arquivoDriver);
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         waiter = new WebDriverWait(driver, 30);
     }
 
