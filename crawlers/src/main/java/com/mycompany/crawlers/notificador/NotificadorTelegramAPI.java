@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class NotificadorTelegramAPI {
 
-    public static final String TOKEN = "576007541:AAGp2H8ohSmCQ3B4g6psRzBVMJcpUaps0QM";
+    public static final String TOKEN = "token";
     public static final String COMANDO = "/nadaprafazer";
     public static final int NUMERO_TENTATIVAS_RESPOSTA = 8;
     private TelegramBot bot;
