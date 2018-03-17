@@ -41,11 +41,11 @@ public class APITelegramTesst {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-    @Test
-    public void hello() {
-        NotificadorTelegramAPI notificador = new NotificadorTelegramAPI();
-        while (true) {
-            Util.esperar(10000);
-        }
-    }
+//    @Test
+//    public void hello() {
+//        NotificadorTelegramAPI notificador = new NotificadorTelegramAPI();
+//        while (true) {
+//            Util.esperar(10000);
+//        }
+//    }
 }

@@ -5,12 +5,9 @@
  */
 package com.mycompany.crawlers.util;
 
-import com.mycompany.crawlers.consumidor.ConsumidorRedditSelenium;
 import com.mycompany.crawlers.model.SubReddit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -33,7 +30,7 @@ public class Util {
         try {
             Thread.sleep(milisegundos);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ConsumidorRedditSelenium.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.getLocalizedMessage());
         }
     }
 }

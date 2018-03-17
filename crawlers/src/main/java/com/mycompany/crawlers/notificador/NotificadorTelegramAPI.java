@@ -5,9 +5,8 @@
  */
 package com.mycompany.crawlers.notificador;
 
-import com.mycompany.crawlers.consumidor.ConsumidorRedditSelenium;
-import com.mycompany.crawlers.consumidor.IConsumidorReddit;
-import com.mycompany.crawlers.exceptions.NotificacaoException;
+import com.mycompany.crawlers.consumidor.ConsumidorFactory;
+import com.mycompany.crawlers.consumidor.ConsumidorTemplate;
 import com.mycompany.crawlers.util.Util;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -48,8 +47,7 @@ public class NotificadorTelegramAPI implements INotificador {
                     }
                     System.out.println("Mensagem recebida: " + mensagemRecebida);
                     //Se for um pedido para enviar as threads do Reddit
-                    if (mensagemRecebida.toLowerCase().contains(COMANDO)) {
-                        System.out.println("Texto recebido contém o comando para busca");
+                    if (mensagemRecebida.toLowerCase().startsWith(COMANDO)) {
                         String[] comandosMensagem = mensagemRecebida.split(" ");
                         //Se passar os parametros corretamente, podemos ver
                         if (comandosMensagem.length == 2) {
@@ -63,7 +61,7 @@ public class NotificadorTelegramAPI implements INotificador {
                             }
                         } else {
                             responder(update, Arrays.asList(new String[]{"Quais subreddits você quer que eu procure? "
-                                    + "O padrão do comando é " + COMANDO + " lista de subs separados por ponto e virgula"}));
+                                    + "O padrão do comando é " + COMANDO + " sub1;sub2;sub3..."}));
                         }
                     } else {
                         responder(update, Arrays.asList(new String[]{update.message().text()}));
@@ -79,7 +77,8 @@ public class NotificadorTelegramAPI implements INotificador {
     }
 
     private List<String> coletarListaDeThreads(String subReddits) {
-        IConsumidorReddit consumidor = new ConsumidorRedditSelenium();
+        ConsumidorFactory consumidorFactory = new ConsumidorFactory();
+        ConsumidorTemplate consumidor = consumidorFactory.createConsumidor();
         return consumidor.coletarThreadsEmAlta(subReddits);
     }
 
@@ -110,6 +109,6 @@ public class NotificadorTelegramAPI implements INotificador {
             }
             Util.esperar(5000);
         }
-        System.out.println("Houve um problema ao enviar a resposta");
+        System.out.println("Não foi possível enviar a resposta");
     }
 }

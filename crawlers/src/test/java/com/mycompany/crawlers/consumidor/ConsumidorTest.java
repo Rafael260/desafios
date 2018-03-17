@@ -44,10 +44,7 @@ public class ConsumidorTest {
     //
 //     @Test
 //     public void testForunsInexistentes() {
-//         IConsumidorReddit consumidor = new ConsumidorRedditSelenium();
-//         List<String> foruns = new ArrayList<>();
-//         foruns.add("Rafael260");
-//         String texto = consumidor.coletarThreadsEmAlta(foruns);
-//         System.out.println(texto);
+//         ConsumidorTemplate consumidor = new ConsumidorSeleniumParser2();
+//         consumidor.coletarThreadsEmAlta("worldnews;askreddit");
 //     }
 }

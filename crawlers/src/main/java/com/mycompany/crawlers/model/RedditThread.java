@@ -15,6 +15,9 @@ public class RedditThread {
     private String linkParaComentarios;
     private String linkDaThread;
 
+    public RedditThread(){
+        this.linkParaComentarios = "";
+    }
     public String getTitulo() {
         return titulo;
     }
