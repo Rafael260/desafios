@@ -29,8 +29,10 @@ Construir um robô que nos envie essa lista via Telegram sempre que receber o co
 
 ## Configurando o robô
 
-`Entre no Telegram e configure seu bot através do link: https://web.telegram.org/#/im?p=@BotFather.
-Utilize o comando /newbot para cadastrar um novo bot. Em seguida, escolha um nome e um usuário para o bot. Após isso, você receberá um token para acessar a API. Coloque o token na constante "TOKEN" na classe NotificacaoTelegramAPI.`
+`Entre no Telegram e configure seu bot através do link: https://web.telegram.org/#/im?p=@BotFather. <br/>
+Utilize o comando /newbot para cadastrar um novo bot. Em seguida, escolha um nome e um usuário para o bot.<br/>
+Após isso, você receberá um token para acessar a API.<br/>
+Coloque o token na constante "TOKEN" na classe NotificacaoTelegramAPI.`
 
 ## Como construir o projeto
 
@@ -38,7 +40,9 @@ Utilize o comando /newbot para cadastrar um novo bot. Em seguida, escolha um nom
 
 ## Executar o projeto
 
-`Utilize o comando java -jar target/crawlers-1.0SNAPSHOT-jar-with-dependencies.jar.
-Depois disso, vá no chat do bot para enviar os comandos`
+`Utilize o comando java -jar target/crawlers-1.0SNAPSHOT-jar-with-dependencies.jar.<br/>
+Depois disso, vá no chat do bot para enviar os comandos.<br/>
+Caso queira rodar o programa apenas para verificar as threads de determinados subreddits, coloque a lista de subreddits <br/>
+como parâmetro do jar: java -jar target/crawlers-1.0SNAPSHOT-jar-with-dependencies.jar worldnews;askreddit.`
 
 

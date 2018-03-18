@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class NotificadorTelegramAPI implements INotificador {
 
-    public static final String TOKEN = "576007541:AAGp2H8ohSmCQ3B4g6psRzBVMJcpUaps0QM";
+    public static final String TOKEN = "token";
     public static final String COMANDO = "/nadaprafazer";
     public static final int NUMERO_TENTATIVAS_RESPOSTA = 8;
     private TelegramBot bot;
@@ -57,7 +57,7 @@ public class NotificadorTelegramAPI implements INotificador {
                                 responder(update, listaDeTheadsEmAlta);
                             } else {
                                 responder(update, Arrays.asList(
-                                        new String[]{"Não encontrei nenhuma thread relevante"}));
+                                        new String[]{"Não encontrei nenhuma thread relevante. Você digitou os nomes corretamente?"}));
                             }
                         } else {
                             responder(update, Arrays.asList(new String[]{"Quais subreddits você quer que eu procure? "

@@ -14,10 +14,11 @@ public abstract class StringFormatter {
     }
     
     public StringFormatter(Integer limit){
-        if(limit != null){
+        if(limit != null && limit > 0){
             this.limit = limit;
         }
         else{
+            System.out.println("Limite inserido é inválido. Utilizando limite padrão.");
             this.limit = 40;
         }
     }
